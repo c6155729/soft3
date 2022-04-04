@@ -62,6 +62,17 @@ def Initial():
     w = str_list[0]
     n = str_list[1]
     return w, n, weight, price, datas
+# def fileoperate():
+#     # 读取第一行之后的数据
+#     f = open(filename.get(), 'r')
+#     res = f.readlines()[1:]
+#     res = [line.strip("\n") for line in res]
+#     f1 = open(filename.get(), 'r')
+#     res1 = f1.readlines()[:1]
+#     res1 = [line.strip("\n") for line in res1]
+#     f.close()
+#     f1.close()
+#     return res, res1
 
 # 绘制散点图
 def Scatter():
@@ -307,6 +318,7 @@ def match(X, m, n, p):
             if k[u] == 0:
                 u = i
             elif k[v] == 0:
+
                 v = i
         if k[u] and k[v]:
             # print(u,v)
@@ -330,20 +342,8 @@ def vari(X, m, n, p):
     return X
 
 
-# 性价比非递增排序
-def Proportion_Sort():
-    global path
-    datas = pd.read_csv(path, sep=' ', header=0)
-    datas.columns = ['Weight', 'Value']
-    datas['Proportion'] = datas.apply(lambda x: x['Value'] / x['Weight'], axis=1)
-    datas['Proportion'] = datas['Proportion'].apply(lambda x: round(x, 3))
-    datas.sort_values(by='Proportion', inplace=True, ascending=False)
-    p=datas['Proportion']
-    return p
-
-
 # 日志动态打印：
-def pr_log_text(logmsg):
+def write_log(logmsg):
     global LOG_NUM
     current_time = obtain_time()
     logmsg_in = str(current_time) + " " + str(logmsg) + "\n"  # 换行
@@ -377,10 +377,8 @@ def choose():  # 处理事件
     for line in m[1]:
         line = line.split(' ')
         a1.append(line)
-
     c = int(a1[0][0])
     num = int(a1[0][1])
-
     a = np.array(a0)
     a = a.astype(int)
     w = (a[:, 0])
@@ -390,13 +388,8 @@ def choose():  # 处理事件
     w = w.astype(int)
     v = v.astype(int)
     item = list(zip(w, v))
-
     if com.get() == "贪心算法":
-
-
         tx=Function1()
-        # print("求解时间为：")
-        # print(time_sum)
         result = "贪心算法：最优解：" + str(tx[0]) + "，" + "求解时间：" + str(tx[1])
         file = open('C:\\Users\\86199\\Desktop\\01背包测试数据\\测试数据\\zrx.txt', 'w')
         file.write(result)
@@ -407,16 +400,10 @@ def choose():  # 处理事件
         result_text.insert(2.0, '\n')
         result_text.insert(2.0, '运行时间为：')
         result_text.insert(2.8, tx[1])
-        pr_log_text("使用贪心算法求解成功")
+        write_log("使用贪心算法求解成功")
 
     elif com.get() == "动态规划算法":
-        # time_start = timer()
         dt=Function2()
-        # print(ret2)
-        # time_end = timer()
-        # time_sum = time_end - time_start
-        # print("求解时间为：")
-        # print(time_sum)
         result = "动态规划算法：最优解：" + str(dt[0]) + "，" + "求解时间：" + str(dt[1])
         file = open('C:\\Users\\86199\\Desktop\\01背包测试数据\\测试数据\\zrx.txt', 'w')
         file.write(result)
@@ -427,16 +414,10 @@ def choose():  # 处理事件
         result_text.insert(2.0, '\n')
         result_text.insert(2.0, '运行时间为：')
         result_text.insert(2.8, dt[1])
-        pr_log_text("使用动态规划算法求解成功")
+        write_log("使用动态规划算法求解成功")
 
     elif com.get() == "回溯法":
-        # time_start = timer()
         hs=Function3()
-        # print(bestV)
-        # time_end = timer()
-        # time_sum = time_end - time_start
-        # print("求解时间为：")
-        # print(time_sum)
         result = "回溯算法：最优解：" + str(hs[0]) + "，" + "求解时间：" + str(hs[1])
         file = open('C:\\Users\\86199\\Desktop\\01背包测试数据\\测试数据\\zrx.txt', 'w')
         file.write(result)
@@ -446,69 +427,56 @@ def choose():  # 处理事件
         result_text.insert(2.0, '\n')
         result_text.insert(2.0, '运行时间为：')
         result_text.insert(2.8, hs[1])
-        pr_log_text("使用回溯法求解成功")
+        write_log("使用回溯法求解成功")
 
-    # elif com.get() == "遗传算法":
-    #     time_start = timer()
-    #     n = len(w)
-    #     C = init(num, n)
-    #     S, F = fitness(C, num, n, w, v, c)
-    #     B, y = best_x(F, S, num)
-    #     Y = [y]
-    #     for i in range(N):
-    #         p = rate(F)
-    #         C = chose(p, C, num, n)
-    #         C = match(C, num, n, Pc)
-    #         C = vari(C, num, n, Pm)
-    #         S, F = fitness(C, num, n, w, v, c)
-    #         B1, y1 = best_x(F, S, num)
-    #         if y1 > y:
-    #             y = y1
-    #         Y.append(y)
-    #     print("遗传算法，最大价值为：")
-    #     print(y)
-    #     time_end = timer()
-    #     time_sum = time_end - time_start
-    #     print("求解时间为：")
-    #     print(time_sum)
-    #     result = "遗传算法：最优解：" + str(bestV) + "，" + "求解时间：" + str(time_sum)
-    #     file = open('C:\\Users\\86199\\Desktop\\01背包测试数据\\测试数据\\zrx.txt', 'w')
-    #     file.write(result)
-    #     file.close()
-    #     result_text.delete(1.0, END)
-    #     result_text.insert(1.0, '最优解为：')
-    #     result_text.insert(1.8, y)
-    #     result_text.insert(2.0, '\n')
-    #     result_text.insert(2.0, '运行时间为：')
-    #     result_text.insert(2.8, time_sum)
-    #     pr_log_text("使用遗传法求解成功")
+    elif com.get() == "遗传算法":
+        n = len(w)
+        C = init(num, n)
+        S, F = fitness(C, num, n, w, v, c)
+        B, y = best_x(F, S, num)
+        Y = [y]
+        for i in range(N):
+            p = rate(F)
+            C = chose(p, C, num, n)
+            C = match(C, num, n, Pc)
+            C = vari(C, num, n, Pm)
+            S, F = fitness(C, num, n, w, v, c)
+            B1, y1 = best_x(F, S, num)
+            if y1 > y:
+                y = y1
+            Y.append(y)
+        print("遗传算法，最大价值为：")
+        print(y)
+        # result = "遗传算法：最优解：" + str(bestV) + "，" + "求解时间：" + str(time_sum)
+        file = open('C:\\Users\\86199\\Desktop\\01背包测试数据\\测试数据\\zrx.txt', 'w')
+        # file.write(result)
+        file.close()
+        result_text.delete(1.0, END)
+        result_text.insert(1.0, '最优解为：')
+        result_text.insert(1.8, y)
+        result_text.insert(2.0, '\n')
+        result_text.insert(2.0, '运行时间为：')
+        # result_text.insert(2.8, time_sum)
+        write_log("使用遗传法求解成功")
 
-# 排序
-def sort():
-    a0 = []
-    descending = []
-    # 计算重量与价值的比值
-    m = Initial()
-    for line in m[0]:
-        line = line.split(' ')
-        a0.append(line)
-    for i in range(len(a0)):
-        F0 = int(a0[i][0])
-        S0 = int(a0[i][1])
-        T0 = F0 / S0
-        m = round(T0,3)
-        descending.append(m)
-    descending.sort(reverse=True)
-    print(descending)
-    for item in descending:
-        px.insert(END, item)
-    pr_log_text("按照重量/质量非递增排列成功")
+# 性价比非递增排序
+def Proportion_Sort():
+    global path
+    datas = pd.read_csv(path, sep=' ', header=0)
+    datas.columns = ['Weight', 'Value']
+    datas['Proportion'] = datas.apply(lambda x: x['Value'] / x['Weight'], axis=1)
+    datas['Proportion'] = datas['Proportion'].apply(lambda x: round(x, 3))
+    datas.sort_values(by='Proportion', inplace=True, ascending=False)
+    p=datas['Proportion']
+    return p
+    write_log("按照重量/质量非递增排列成功")
+
 # 功能框架
 btn2 = Button(frame2, text='求解问题', command=choose, width=15, height=1)
 btn2.grid(row=0, column=0, padx=20, pady=10)
 btn3 = Button(frame2, text='绘制散点图', command=Scatter, width=15, height=1)
 btn3.grid(row=0, column=3, padx=20, pady=10)
-btn4 = Button(frame2, text='重量比排序', command=sort, width=15, height=1)
+btn4 = Button(frame2, text='重量比排序', command=Proportion_Sort, width=15, height=1)
 btn4.grid(row=0, column=5, padx=20, pady=10)
 btn5 = Button(frame2, text='上传文件', command=xz, width=15, height=1)
 btn5.grid(row=0, column=7, padx=20, pady=10)
